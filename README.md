@@ -10,6 +10,7 @@ Node vXXX
 Cordova vXXX  
 
 ## Requirement
+https://github.com/Carthage/Carthage  
 https://github.com/CocoaPods/Xcodeproj  
 https://github.com/Leonidas-from-XIV/node-xml2js  
 
