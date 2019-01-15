@@ -36,6 +36,7 @@ begin
       build_phase.name = BUILD_PHASE_NAME
       build_phase.shell_path = "/bin/sh"
       build_phase.shell_script = "/usr/local/bin/carthage copy-frameworks\n"
+      build_phase.input_paths = []
       target.build_phases << build_phase
     end
   end

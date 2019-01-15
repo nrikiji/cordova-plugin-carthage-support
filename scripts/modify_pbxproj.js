@@ -32,7 +32,7 @@ module.exports = function (context) {
     })
     if (0 < frameworks.length) {
         var json = { frameworks: frameworks, project_path: xcodeProjectPath }
-        execSync("ruby " + __dirname + "/add_pbx_build_phase.rb '" + JSON.stringify(json) + "'", stdio);
+        execSync("ruby " + __dirname + "/modify_pbxproj.rb '" + JSON.stringify(json) + "'", stdio);
     }
 
     function getConfigParser(context, config) {
