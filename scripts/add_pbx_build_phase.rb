@@ -3,11 +3,11 @@
 require "xcodeproj"
 require "json"
 
-if ARGV.size < 1
-  exit
-end
-
 begin
+  if ARGV.size < 1
+    raise "require argument"
+  end
+  
   frameworks = JSON.parse(ARGV[0])
   if !frameworks.has_key?("frameworks")
     raise "frameworks is not exists"
