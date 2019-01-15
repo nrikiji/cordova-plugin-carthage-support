@@ -42,3 +42,5 @@ plugin.xml
 <framework src="src/ios/LineSDK.framework" custom="true" carthage="true" />
 <framework src="src/ios/LineSDKObjC.framework" custom="true" carthage="true" />
 ```
+
+3. `cordova prepare ios`のタイミングで`Build Phases`の`Run Script`へ設定  
