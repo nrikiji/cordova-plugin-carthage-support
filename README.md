@@ -6,7 +6,12 @@ Xcodeの`Build Phases`へ`Run Script`の設定を行う。
 - iOS
 
 ## Supported version
+Node vXXX  
+Cordova vXXX  
 
+## Requirement
+https://github.com/CocoaPods/Xcodeproj  
+https://github.com/Leonidas-from-XIV/node-xml2js  
 
 ## Installation
 ```
