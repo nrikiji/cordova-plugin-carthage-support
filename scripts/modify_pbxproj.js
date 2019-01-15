@@ -16,10 +16,10 @@ module.exports = function (context) {
 
     var frameworks = []
     context.opts.cordova.plugins.forEach(id => {
-        parser.parseString(fs.readFileSync('plugins/' + id + '/plugin.xml'), (err, data) => {
+        parser.parseString(fs.readFileSync("plugins/" + id + "/plugin.xml"), (err, data) => {
             if (!err && data.plugin.platform) {
                 data.plugin.platform.forEach((platform) => {
-                    if (platform.$.name === 'ios') {
+                    if (platform.$.name === "ios") {
                         (platform.framework || []).forEach(framework => {
                             if (framework.$.carthage) {
                                 frameworks.push(configParser.name() + "/Plugins/" + id + "/" + path.basename(framework.$.src))
@@ -38,10 +38,10 @@ module.exports = function (context) {
     function getConfigParser(context, config) {
         var semver = context.requireCordovaModule("semver")
         var ConfigParser
-        if (semver.lt(context.opts.cordova.version, '5.4.0')) {
-            ConfigParser = context.requireCordovaModule('cordova-lib/src/ConfigParser/ConfigParser')
+        if (semver.lt(context.opts.cordova.version, "5.4.0")) {
+            ConfigParser = context.requireCordovaModule("cordova-lib/src/ConfigParser/ConfigParser")
         } else {
-            ConfigParser = context.requireCordovaModule('cordova-common/src/ConfigParser/ConfigParser')
+            ConfigParser = context.requireCordovaModule("cordova-common/src/ConfigParser/ConfigParser")
         }
         return new ConfigParser(config)
     }
