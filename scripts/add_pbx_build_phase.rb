@@ -3,6 +3,8 @@
 require "xcodeproj"
 require "json"
 
+BUILD_PHASE_NAME = "Cordova Plugin Carthage Run Script"
+
 begin
   if ARGV.size < 1
     raise "require argument"
@@ -23,7 +25,7 @@ begin
     target.build_phases.each do |build_phase|
       if build_phase.isa != "PBXShellScriptBuildPhase"
         next
-      elsif build_phase.name != "Cordova Plugin Carthage Run Script"
+      elsif build_phase.name != BUILD_PHASE_NAME
         next
       else
         flagBuildPhase = true
@@ -31,7 +33,7 @@ begin
     end
     if !flagBuildPhase
       build_phase = project.new(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)
-      build_phase.name = "Cordova Plugin Carthage Run Script"
+      build_phase.name = BUILD_PHASE_NAME
       build_phase.shell_path = "/bin/sh"
       build_phase.shell_script = "/usr/local/bin/carthage copy-frameworks\n"
       target.build_phases << build_phase
@@ -42,7 +44,7 @@ begin
     target.build_phases.each do |build_phase|
       if build_phase.isa != "PBXShellScriptBuildPhase"
         next
-      elsif build_phase.name != "Cordova Plugin Carthage Run Script"
+      elsif build_phase.name != BUILD_PHASE_NAME
         next
       end
       frameworks["frameworks"].each do |framework|
