@@ -6,8 +6,8 @@ Xcodeの`Build Phases`へ`Run Script`の設定を行う。
 - iOS
 
 ## Supported version
-Node vXXX  
-Cordova vXXX  
+Node(>=6.13.1)
+Cordova(>=6.5)
 
 ## Requirement
 https://github.com/Carthage/Carthage  
