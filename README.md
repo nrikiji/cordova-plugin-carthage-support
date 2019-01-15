@@ -6,6 +6,7 @@ Xcodeの`Build Phases`へ`Run Script`の設定を行う。
 - iOS
 
 ## Supported version
+Ruby(>=2.3.0)  
 Node(>=6.13.1)  
 Cordova(>=6.5)  
 
