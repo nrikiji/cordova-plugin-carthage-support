@@ -9,6 +9,7 @@ Xcodeの`Build Phases`へ`Run Script`の設定を行う。
 Ruby(>=2.3.0)  
 Node(>=6.13.1)  
 Cordova(>=6.5)  
+Carthage(>=0.2)  
 
 ## Requirement
 https://github.com/Carthage/Carthage  
