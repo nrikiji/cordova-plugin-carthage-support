@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var exec = require("child_process").exec
 var execSync = require("child_process").execSync
 var fs = require("fs")
 var path = require("path")
@@ -12,28 +13,57 @@ module.exports = function (context) {
     var rootPath = context.opts.projectRoot
     var configPath = path.join(rootPath, "config.xml")
     var configParser = getConfigParser(context, configPath)
-    var xcodeProjectPath = rootPath + "/platforms/ios/" + configParser.name() + ".xcodeproj"
+    var platformPath = rootPath + "/platforms/ios"
+    var cartfilePath = platformPath + "/Cartfile"
+    var xcodeProjectPath = platformPath + "/" + configParser.name() + ".xcodeproj"
 
+    var cartfiles = []
     var frameworks = []
+
     context.opts.cordova.plugins.forEach(id => {
-        parser.parseString(fs.readFileSync("plugins/" + id + "/plugin.xml"), (err, data) => {
-            if (!err && data.plugin.platform) {
-                data.plugin.platform.forEach((platform) => {
-                    if (platform.$.name === "ios") {
-                        (platform.framework || []).forEach(framework => {
-                            if (framework.$.carthage) {
-                                frameworks.push(configParser.name() + "/Plugins/" + id + "/" + path.basename(framework.$.src))
-                            }
-                        })
-                    }
-                })
+        var xmlPath = "plugins/" + id + "/plugin.xml"
+        parser.parseString(fs.readFileSync(xmlPath), (err, data) => {
+            if (err || !data.plugin.platform) {
+                return
             }
+            data.plugin.platform.forEach((platform) => {
+                if (platform.$.name != "ios" || !platform.carthage) {
+                    return
+                }
+                platform.carthage.forEach((carthage) => {
+                    var items = carthage.cartfile || []
+                    items.forEach((cartfile) => {
+                        cartfiles.push(cartfile)
+                    })
+                    items = carthage.framework || []
+                    items.filter((framework) => {
+                        return framework.$ && framework.$.src
+                    }).forEach((framework) => {
+                        frameworks.push(framework.$.src)
+                    })
+                })
+            })
         })
     })
-    if (0 < frameworks.length) {
+
+    if (cartfiles.length < 1 || frameworks.length < 1) {
+        process.exit(0)
+    }
+
+    console.log("##### Create Cartfile")
+    fs.writeFileSync(cartfilePath, cartfiles.join("\r\n"))
+
+    console.log("##### Update Carthage(>=0.20)")
+    exec("carthage bootstrap --platform iOS --cache-builds", { cwd: platformPath }, (err, stdout, stderr) => {
+        if (err) {
+            console.err(err, stderr)
+            process.exit(1)
+        }
+        console.log(stdout)
+        console.log("##### Setting Run Script")
         var json = { frameworks: frameworks, project_path: xcodeProjectPath }
         execSync("ruby " + __dirname + "/modify_pbxproj.rb '" + JSON.stringify(json) + "'", stdio);
-    }
+    })
 
     function getConfigParser(context, config) {
         var semver = context.requireCordovaModule("semver")
