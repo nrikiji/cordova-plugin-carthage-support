@@ -23,26 +23,15 @@ cordova plugin add https://github.com/nrikiji/cordova-plugin-carthage-support.gi
 
 ## Usage、Example
 
-1. carthageでframeworkを入手  
-
-```
-# Cartfile
-github "line/line-sdk-ios-swift" ~> 5.0
-
-# Build
-carthage update --platform iOS
-
-# Copy framework
-cp -r Carthage/Build/iOS/LineSDK.framework /path/to/plugin/src/ios
-cp -r Carthage/Build/iOS/LineSDKObjC.framework /path/to/plugin/src/ios
-```
-
-2. plugin.xmlのframeworkタグにcarthage属性を追加  
+1. plugin.xmlのframeworkタグにcarthage属性を追加  
 
 plugin.xml
 ```
-<framework src="src/ios/LineSDK.framework" custom="true" carthage="true" />
-<framework src="src/ios/LineSDKObjC.framework" custom="true" carthage="true" />
+<carthage>
+  <cartfile>github "line/line-sdk-ios-swift" ~> 5.0</cartfile>
+  <framework src="LineSDK.framework"/>
+  <framework src="LineSDKObjC.framework"/>
+</carthage>
 ```
 
-3. `cordova prepare ios`のタイミングで`Build Phases`の`Run Script`へ設定  
+2. `cordova prepare ios`のタイミングで`Build Phases`の`Run Script`へ設定  
