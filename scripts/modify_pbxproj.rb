@@ -32,9 +32,18 @@ begin
 
   ## Framework Search Paths
   project.targets.each do |target|
-    paths = ['$(inherited)', "$(PROJECT_DIR)/Carthage/Build/iOS"]
-    target.build_settings("Debug")["FRAMEWORK_SEARCH_PATHS"] = paths
-    target.build_settings("Release")["FRAMEWORK_SEARCH_PATHS"] = paths
+    ["Debug", "Release"].each do |config|
+      paths = target.build_settings(config)["FRAMEWORK_SEARCH_PATHS"]
+      path_carthage = "$(PROJECT_DIR)/Carthage/Build/iOS"
+      if paths.nil?
+        paths = ['$(inherited)', path_carthage]
+      else
+        unless paths.include?(path_carthage)
+          paths.push(path_carthage)
+        end
+      end
+      target.build_settings(config)["FRAMEWORK_SEARCH_PATHS"] = paths
+    end
   end
 
   ## Run Script
