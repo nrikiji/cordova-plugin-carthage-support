@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var crypto = require("crypto");
 var exec = require("child_process").exec
 var execSync = require("child_process").execSync
 var fs = require("fs")
@@ -51,10 +52,18 @@ module.exports = function (context) {
     }
 
     console.log("##### Create Cartfile")
+    var cmd, tmpCartfilePath = cartfilePath + ".tmp"
+    fs.writeFileSync(tmpCartfilePath, cartfiles.join("\r\n"))
+
+    if (changeCartfile(cartfilePath, tmpCartfilePath)) {
+        cmd = "carthage update --platform iOS"
+    } else {
+        cmd = "carthage bootstrap --platform iOS --cache-builds"
+    }
     fs.writeFileSync(cartfilePath, cartfiles.join("\r\n"))
 
-    console.log("##### Update Carthage(>=0.20)")
-    exec("carthage bootstrap --platform iOS --cache-builds", { cwd: platformPath }, (err, stdout, stderr) => {
+    console.log("##### Update Carthage")
+    exec(cmd, { cwd: platformPath }, (err, stdout, stderr) => {
         if (err) {
             console.err(err, stderr)
             process.exit(1)
@@ -75,4 +84,21 @@ module.exports = function (context) {
         }
         return new ConfigParser(config)
     }
+
+    function changeCartfile(srcPath, dstPath) {
+        try {
+            fs.statSync(srcPath)
+            fs.statSync(dstPath)
+            return md5file(srcPath) != md5file(dstPath)
+        } catch(err) {
+            return true
+        }
+    }
+
+    function md5file(path) {
+        var target = fs.readFileSync(path)
+        var md5hash = crypto.createHash("md5")
+        md5hash.update(target)
+        return md5hash.digest("hex")
+    }    
 }
