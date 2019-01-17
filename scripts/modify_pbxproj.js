@@ -63,6 +63,7 @@ module.exports = function (context) {
     fs.writeFileSync(cartfilePath, cartfiles.join("\r\n"))
 
     console.log("##### Update Carthage")
+    console.log(cmd)
     exec(cmd, { cwd: platformPath }, (err, stdout, stderr) => {
         if (err) {
             console.err(err, stderr)
