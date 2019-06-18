@@ -66,7 +66,7 @@ module.exports = function (context) {
     console.log(cmd)
     exec(cmd, { cwd: platformPath }, (err, stdout, stderr) => {
         if (err) {
-            console.err(err, stderr)
+            console.error(err, stderr)
             process.exit(1)
         }
         console.log(stdout)
