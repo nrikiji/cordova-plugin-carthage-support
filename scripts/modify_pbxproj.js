@@ -7,6 +7,7 @@ var fs = require("fs")
 var path = require("path")
 var xml2js = require("xml2js")
 var parser = new xml2js.Parser()
+var semver = require('semver');
 
 var stdio = { stdio:[0, 1, 2] };
 
@@ -76,14 +77,15 @@ module.exports = function (context) {
     })
 
     function getConfigParser(context, config) {
-        var semver = context.requireCordovaModule("semver")
-        var ConfigParser
-        if (semver.lt(context.opts.cordova.version, "5.4.0")) {
-            ConfigParser = context.requireCordovaModule("cordova-lib/src/ConfigParser/ConfigParser")
+        let ConfigParser;
+
+        if (semver.lt(context.opts.cordova.version, '5.4.0')) {
+            ConfigParser = context.requireCordovaModule('cordova-lib/src/ConfigParser/ConfigParser');
         } else {
-            ConfigParser = context.requireCordovaModule("cordova-common/src/ConfigParser/ConfigParser")
+            ConfigParser = context.requireCordovaModule('cordova-common/src/ConfigParser/ConfigParser');
         }
-        return new ConfigParser(config)
+
+        return new ConfigParser(configPath);
     }
 
     function changeCartfile(srcPath, dstPath) {
