@@ -1,5 +1,15 @@
 {
   "name": "cordova-plugin-carthage-support",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": ""
+    "cordova": {
+        "id": "cordova-plugin-carthage-support",
+        "platforms": [
+            "ios"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nrikiji/cordova-plugin-carthage-support"
+    }
 }
