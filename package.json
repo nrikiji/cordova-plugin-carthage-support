@@ -1,7 +1,7 @@
 {
-  "name": "cordova-plugin-carthage-support",
-  "version": "0.1.1",
-  "description": ""
+    "name": "cordova-plugin-carthage-support",
+    "version": "0.1.1",
+    "description": "",
     "cordova": {
         "id": "cordova-plugin-carthage-support",
         "platforms": [
