@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-carthage-support" version="0.1.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-carthage-support" version="1.0.0">
   <name>Cordova Plugin Carthage Support</name>
   <hook type="after_prepare" src="scripts/modify_pbxproj.js"/>
   <hook type="after_compile" src="scripts/modify_pbxproj.js"/>
